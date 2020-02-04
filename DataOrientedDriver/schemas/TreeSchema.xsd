@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="treeDefs">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="treeDef" type="treeType" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:complexType name="treeType">
+  <xs:sequence>
+    <xs:element name="name" type="xs:string" />
+    <xs:element name="nodes">
+      <xs:complexType>
+        <xs:sequence>
+          <xs:element name="node" type="nodeType" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:element>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="nodeType">
+  <xs:sequence>
+    <xs:element name="type" type="xs:string" />
+    <xs:element name="node" type="nodeType" minOccurs="0" maxOccurs="unbounded" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:element name="node" type="nodeType" />
+
+</xs:schema>

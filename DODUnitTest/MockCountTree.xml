@@ -1,0 +1,27 @@
+<treeDefs>
+
+  <treeDef>
+    <name>MockCountTree</name>
+    <nodes>
+      <node>
+        <type>Filter</type>
+        <node>
+          <type>AlwaysFalseCondition</type>
+        </node>
+        <node>
+          <type>NoCountAction</type>
+        </node>
+      </node>
+      <node>
+        <type>Filter</type>
+        <node>
+          <type>AlwaysTrueCondition</type>
+        </node>
+        <node>
+          <type>CountAction</type>
+        </node>
+      </node>
+    </nodes>
+  </treeDef>
+  
+</treeDefs>
