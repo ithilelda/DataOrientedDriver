@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterDriver", "BetterDriver\BetterDriver.csproj", "{36A52529-769B-417E-9663-47620AF8D343}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataOrientedDriver", "DataOrientedDriver\DataOrientedDriver.csproj", "{36A52529-769B-417E-9663-47620AF8D343}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DODUnitTest", "DODUnitTest\DODUnitTest.csproj", "{2F154BC8-D3C7-4052-9F14-B4CD7718CAAC}"
 EndProject

@@ -20,6 +20,8 @@ namespace DODUnitTest
         [TestCase(955)]
         [TestCase(3940)]
         [TestCase(59307)]
+        [TestCase(495965)]
+        [TestCase(1349038)]
         public void MockBuilder_BuildFromXml_CountMatch(int count)
         {
             var system = new BehaviorSystem();
