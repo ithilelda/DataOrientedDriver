@@ -11,6 +11,7 @@ namespace DataOrientedDriver
 
         public void AddChild(Behavior child) { Children.Add(child); child.Parent = this; }
         public void RemoveChild(Behavior child) { Children.Remove(child); child.Parent = null; }
+        public List<Behavior> GetChildren() => Children;
         public void ClearChildren()
         {
             foreach (var child in Children)

@@ -8,8 +8,8 @@ namespace DODUnitTest
         private Dictionary<string, float> floatDict = new Dictionary<string, float>();
         private Dictionary<string, int> intDict = new Dictionary<string, int>();
         private Dictionary<string, object> objDict = new Dictionary<string, object>();
-        public override void Post(string key, float value) => floatDict[key] = value;
-        public override void Post(string key, int value) => intDict[key] = value;
+        public override void PostFloat(string key, float value) => floatDict[key] = value;
+        public override void PostInt(string key, int value) => intDict[key] = value;
         public override void Post<T>(string key, T value) where T : class => objDict[key] = value;
         public override float GetFloat(string key) => floatDict[key];
         public override int GetInt(string key) => intDict[key];

@@ -23,6 +23,20 @@ namespace DataOrientedDriver
             if (i >= 0 && i < nodes.Count) return nodes[i];
             else return null;
         }
+        // will remove it and the entire subtree.
+        public void RemoveNode(ISchedulable s)
+        {
+            if(!nodes.Contains(s)) return;
+            nodes.Remove(s);
+            if(s is Decorator d)
+            {
+                RemoveNode(d.GetChild());
+            }
+            if(s is Composite c)
+            {
+                foreach(var child in c.GetChildren()) RemoveNode(child);
+            }
+        }
         public void PostSchedule(ISchedulable s) { if (CurrentIsFirst) secondQueue.Enqueue(s); else firstQueue.Enqueue(s); }
         public void Step(float dt)
         {

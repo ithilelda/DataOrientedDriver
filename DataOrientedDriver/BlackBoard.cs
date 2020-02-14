@@ -6,7 +6,7 @@ namespace DataOrientedDriver
         public abstract int GetInt(string key);
         public abstract float GetFloat(string key);
         public abstract void Post<T>(string key, T value) where T : class;
-        public abstract void Post(string key, int value);
-        public abstract void Post(string key, float value);
+        public abstract void PostInt(string key, int value);
+        public abstract void PostFloat(string key, float value);
     }
 }

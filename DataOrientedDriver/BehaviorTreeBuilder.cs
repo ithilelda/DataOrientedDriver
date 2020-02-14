@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.Xml.Schema;
+using System.Linq;
 
 namespace DataOrientedDriver
 {
@@ -30,14 +31,11 @@ namespace DataOrientedDriver
             var setting = new XmlReaderSettings();
             setting.ValidationType = ValidationType.Schema;
             var assembly = typeof(Behavior).Assembly;
-            var resources = assembly.GetManifestResourceNames();
+            var resources = assembly.GetManifestResourceNames().Where(r => r.EndsWith(".xsd"));
             foreach (var resource in resources)
             {
-                if (resource.EndsWith(".xsd"))
-                {
-                    var schema = XmlSchema.Read(assembly.GetManifestResourceStream(resource), null);
-                    setting.Schemas.Add(schema);
-                }
+                var schema = XmlSchema.Read(assembly.GetManifestResourceStream(resource), null);
+                setting.Schemas.Add(schema);
             }
             
             using(var reader = XmlReader.Create(fullpath, setting))
@@ -64,11 +62,7 @@ namespace DataOrientedDriver
         public virtual Behavior Build()
         {
             if (root == null) throw new BadBuilderUseException("Root node cannot be null!");
-            else 
-            {
-                ss.PostSchedule(root);
-                return root;
-            }
+            else return root;
         }
         public TBuilder Root()
         {

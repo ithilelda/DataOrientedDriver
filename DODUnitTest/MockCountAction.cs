@@ -16,7 +16,7 @@ namespace DODUnitTest
 
         public override void Step(float dt)
         {
-            bb.Post(Key, ++count);
+            bb.PostInt(Key, ++count);
             Status = NodeStatus.SUCCESS;
             Parent.OnChildComplete(this, Status);
         }
