@@ -28,14 +28,14 @@ namespace DataOrientedDriver
     {
         public Action(IScheduler s) : base(s) { }
         public override void Enter() { Clear(); scheduler.PostSchedule(this); }
-        public override void Exit(NodeStatus status) { }
+        public override void Exit(NodeStatus status) { Parent.OnChildComplete(this, Status); }
         public override void OnChildComplete(Behavior sender, NodeStatus childStatus) {}
     }
     public abstract class Condition : Behavior
     {
         public Condition(IScheduler s) : base(s) { }
         public override void Enter() { Clear(); scheduler.PostSchedule(this);  }
-        public override void Exit(NodeStatus status) { }
+        public override void Exit(NodeStatus status) { Parent.OnChildComplete(this, Status); }
         public override void OnChildComplete(Behavior sender, NodeStatus childStatus) {}
     }
 }

@@ -13,7 +13,7 @@ namespace DataOrientedDriver
 
         public BehaviorSystem() {}
 
-        public int NodeCount 
+        public int NodeCount
         {
             get { return nodes.Count; }
         }
