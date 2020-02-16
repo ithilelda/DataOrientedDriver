@@ -9,7 +9,8 @@
           <type>AlwaysFalseCondition</type>
         </node>
         <node>
-          <type>NoCountAction</type>
+          <type>MockCountAction</type>
+          <param>noCount</param>
         </node>
       </node>
       <node>
@@ -18,7 +19,8 @@
           <type>AlwaysTrueCondition</type>
         </node>
         <node>
-          <type>CountAction</type>
+          <type>MockCountAction</type>
+          <param>count</param>
         </node>
       </node>
     </nodes>

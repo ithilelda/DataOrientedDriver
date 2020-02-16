@@ -1,8 +1,9 @@
 using DataOrientedDriver;
+using System;
 
 namespace DODUnitTest
 {
-    public class MockCountAction : Action
+    public class MockCountAction : DataOrientedDriver.Action
     {
         private string Key;
         private BlackBoard bb;
@@ -10,7 +11,7 @@ namespace DODUnitTest
         public MockCountAction (IScheduler ss, BlackBoard bb, string key) : base(ss)
         {
             this.bb = bb;
-            Key = key;
+            Key = key ?? throw new ArgumentNullException("key");
             count = 0;
         }
 
@@ -18,7 +19,7 @@ namespace DODUnitTest
         {
             bb.PostInt(Key, ++count);
             Status = NodeStatus.SUCCESS;
-            Parent.OnChildComplete(this, Status);
+            Exit(Status);
         }
     }
 }

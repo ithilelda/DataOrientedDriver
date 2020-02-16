@@ -2,6 +2,9 @@
 using System.Xml;
 using System.Xml.Schema;
 using System.Linq;
+using System.Reflection;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace DataOrientedDriver
 {
@@ -129,6 +132,7 @@ namespace DataOrientedDriver
         }
         public TBuilder End()
         {
+            //Console.WriteLine(currentNode);
             currentNode = currentNode.Parent;
             if (currentNode == null) return BuilderInstance;
             while (currentNode is Decorator dec)
@@ -199,30 +203,80 @@ namespace DataOrientedDriver
         {
             // we are at the <node> tag when this function is called.
             reader.ReadStartElement("node");
-            reader.ReadStartElement("type"); // now we read pass the <type> tag, and we can get the string type after this.
-            var method_name = reader.ReadContentAsString();
-            // the content of the <type> tag precisely describes the method name that we should use, so we use reflection to call that.
-            var method = BuilderInstance.GetType().GetMethod(method_name);
-            method?.Invoke(BuilderInstance, null);
-            reader.ReadEndElement(); // read past </type>.
+            MethodInfo method = null;
+            object[] pars = null;
+            Type[] types = null;
+            var index = 0;
+            var invoked = false;
             while (reader.Read()) // read the next token.
             {
-                // if we encounter another <node>, we have children nodes, we should recursively handle it.
+                //Console.WriteLine($"{reader.NodeType}, {reader.Name}");
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-                    HandleNode(reader);
-                    
+                    // the content of the <type> tag precisely describes the method name that we should use, so we use reflection to get that.
+                    if (reader.Name == "type")
+                    {
+                        method = HandleType(reader);
+                        types = method.GetParameters().Select(p => p.ParameterType).ToArray();
+                        pars = new object[types.Length];
+                    }
+                    // if we encounter the <param> element, we parse them into a parameter array by passing in the types array.
+                    else if (reader.Name == "param")
+                    {
+                        pars[index] = HandleParams(reader, types[index]);
+                        index++;
+                    }
+                    // if we encounter another <node>, we have children nodes, we should recursively handle it.
+                    else if (reader.Name == "node")
+                    {
+                        // another place where we need to invoke the method and build the node is when we found that we have children.
+                        // we need to first create the node, then we can create the children.
+                        if (!invoked)
+                        {
+                            method.Invoke(BuilderInstance, pars);
+                            invoked = true;
+                        }
+                        HandleNode(reader);
+                    }
                 }
                 // otherwise, we break the loop and return to the previous recursion level.
-                else break;
+                else
+                {
+                    // if we reached the end element, where only </node> is possible because we handled </type> and </param>.
+                    // we know that the necessary data is all get, and we can invoke the builder method, if it is not invoked before.
+                    if(!invoked)
+                    {
+                        method.Invoke(BuilderInstance, pars);
+                        invoked = true;
+                    }
+                    // we need to read past the </node> element after this node is done, so that our next read can be the next start tag.
+                    // if not doing so, whitespace element would show up. No idea why.
+                    reader.ReadEndElement();
+                    // if we encountered the </node> element, we have to break out of the reading loop and return to last level of recursion.
+                    break;
+                }
             }
             // after we recursively built our children, we call End() on branch nodes.
-            if (!method_name.EndsWith("Action") && !method_name.EndsWith("Condition")) 
+            if (!method.Name.EndsWith("Action") && !method.Name.EndsWith("Condition")) 
             {
                 End();
             }
-            // we need to read past the </node> element after this node is done, so that our next read can be the next start tag.
+        }
+
+        protected object HandleParams(XmlReader reader, Type type)
+        {
+            reader.ReadStartElement("param");
+            var value = reader.ReadContentAsString();
             reader.ReadEndElement();
+            var converter = TypeDescriptor.GetConverter(type);
+            return converter.ConvertFromString(value);
+        }
+        protected MethodInfo HandleType(XmlReader reader)
+        {
+            reader.ReadStartElement("type");
+            var method = reader.ReadContentAsString();
+            reader.ReadEndElement();
+            return BuilderInstance.GetType().GetMethod(method);
         }
     }
 }

@@ -7,15 +7,11 @@ namespace DODUnitTest
         protected override MockBuilder BuilderInstance => this;
         public MockBuilder(BehaviorSystem ss, BlackBoard bb) : base(ss, bb) {}
 
-        public void NoCountAction()
+        public MockBuilder MockCountAction(string key)
         {
-            var a = new MockCountAction(ss, bb, "noCount");
+            var a = new MockCountAction(ss, bb, key);
             Action(a);
-        }
-        public void CountAction()
-        {
-            var a = new MockCountAction(ss, bb, "count");
-            Action(a);
+            return this;
         }
     }
 }
