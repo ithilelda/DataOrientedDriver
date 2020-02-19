@@ -1,4 +1,6 @@
-﻿
+﻿using System.Collections.Generic;
+
+
 namespace DataOrientedDriver
 {
     public interface ISchedulable
@@ -10,9 +12,13 @@ namespace DataOrientedDriver
     {
         void PostSchedule(ISchedulable schedule);
     }
-    public interface IUtilized
+    public interface IUtility
     {
         float Utility { get; }
         void CalculateUtility();
+    }
+    public interface IUtilizer
+    {
+        IUtility Select(IEnumerable<IUtility> utils);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace DataOrientedDriver
+﻿
+
+namespace DataOrientedDriver
 {
     public class Selector : Composite
     {

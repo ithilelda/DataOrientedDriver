@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
+
 
 namespace DataOrientedDriver
 {
     public class UtilitySelector : Composite
     {
-        public UtilitySelector(IScheduler s) : base(s) { }
+        protected IUtilizer Utilizer;
+        public UtilitySelector(IScheduler s, IUtilizer u) : base(s) { Utilizer = u; }
 
         public override void Enter()
         {
-            Clear();
-            // TODO: need implementation.
+            var selected = Utilizer.Select(Children);
+            if(selected != null) ((Behavior)selected).Enter();
         }
         public override void OnChildComplete(Behavior sender, NodeStatus status)
         {
@@ -23,16 +23,14 @@ namespace DataOrientedDriver
             // we move to the next child if the previous one failed or is aborted.
             else
             {
-                // if we have more, we enters our next child.
-                if (ChildIterator.MoveNext())
+                var selected = Utilizer.Select(Children.Where(b => b != sender));
+                // if the utilizer returned a valid selection, we continue.
+                if(selected != null)
                 {
-                    ChildIterator.Current.Enter();
+                    ((Behavior)selected).Enter();
                 }
-                // if we don't have any left, we exit with failure.
-                else
-                {
-                    Exit(status);
-                }
+                // otherwise, we exit with failure.
+                else Exit(status);
             }
         }
     }

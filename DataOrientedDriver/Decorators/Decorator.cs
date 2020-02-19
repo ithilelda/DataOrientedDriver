@@ -1,4 +1,6 @@
-﻿namespace DataOrientedDriver
+﻿
+
+namespace DataOrientedDriver
 {
     //branch nodes.
     public abstract class Decorator : Behavior

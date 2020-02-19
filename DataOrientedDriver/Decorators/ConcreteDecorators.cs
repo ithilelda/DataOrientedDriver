@@ -1,4 +1,5 @@
 ﻿
+
 namespace DataOrientedDriver
 {
     public class InfiniteDecorator : Decorator

@@ -1,9 +1,10 @@
 ﻿using System;
 
+
 namespace DataOrientedDriver
 {
     //base class.
-    public abstract class Behavior : ISchedulable, IUtilized
+    public abstract class Behavior : ISchedulable, IUtility
     {
         public NodeStatus Status { get; protected set; }
         public float Utility { get; protected set; }
