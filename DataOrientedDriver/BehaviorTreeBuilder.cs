@@ -4,7 +4,6 @@ using System.Xml.Schema;
 using System.Linq;
 using System.Reflection;
 using System.ComponentModel;
-using System.Collections.Generic;
 
 namespace DataOrientedDriver
 {
@@ -53,7 +52,7 @@ namespace DataOrientedDriver
                     }
                     else if (reader.NodeType == XmlNodeType.EndElement)
                     {
-                        if (reader.Name == "treeDef") return Build();
+                        if (reader.Name == "treeDef") return root;
                     }
                 }
             }
@@ -162,7 +161,7 @@ namespace DataOrientedDriver
             }
             else if (currentNode is Decorator dec)
             {
-                dec.SetChild(e);
+                dec.Child = e;
             }
             else if (currentNode is Composite com)
             {
@@ -185,7 +184,7 @@ namespace DataOrientedDriver
             }
             else if (currentNode is Decorator dec)
             {
-                dec.SetChild(e);
+                dec.Child = e;
                 End();
             }
             else if (currentNode is Composite com)

@@ -7,8 +7,8 @@ namespace DataOrientedDriver
     {
         public NodeStatus Status { get; protected set; }
         public float Utility { get; protected set; }
+        public Behavior Parent { get; set; }
 
-        public Behavior Parent;
         protected IScheduler scheduler;
 
         public Behavior(IScheduler s) => scheduler = s ?? throw new ArgumentNullException("scheduler");
@@ -19,7 +19,7 @@ namespace DataOrientedDriver
 
         public abstract void Enter();
         public abstract void Step(float dt);
-        public abstract void Exit(NodeStatus status);
+        public virtual void Exit(NodeStatus status) { Parent.OnChildComplete(this, status); }
         public abstract void OnChildComplete(Behavior sender, NodeStatus childStatus);
     }
 
@@ -28,14 +28,12 @@ namespace DataOrientedDriver
     {
         public Action(IScheduler s) : base(s) { }
         public override void Enter() { Clear(); scheduler.PostSchedule(this); }
-        public override void Exit(NodeStatus status) { Parent.OnChildComplete(this, Status); }
         public override void OnChildComplete(Behavior sender, NodeStatus childStatus) {}
     }
     public abstract class Condition : Behavior
     {
         public Condition(IScheduler s) : base(s) { }
         public override void Enter() { Clear(); scheduler.PostSchedule(this);  }
-        public override void Exit(NodeStatus status) { Parent.OnChildComplete(this, Status); }
         public override void OnChildComplete(Behavior sender, NodeStatus childStatus) {}
     }
 }

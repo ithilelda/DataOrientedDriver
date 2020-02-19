@@ -30,7 +30,7 @@ namespace DataOrientedDriver
             nodes.Remove(s);
             if(s is Decorator d)
             {
-                RemoveNode(d.GetChild());
+                RemoveNode(d.Child);
             }
             if(s is Composite c)
             {

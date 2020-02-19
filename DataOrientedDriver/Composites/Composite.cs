@@ -36,7 +36,5 @@ namespace DataOrientedDriver
             // if there is no child, we just silently ignore the execution and proceed. This way, our code doesn't have to deal with malformed trees.
             if (ChildIterator.MoveNext()) ChildIterator.Current.Enter();
         }
-
-        public override void Exit(NodeStatus status) {}
     }
 }

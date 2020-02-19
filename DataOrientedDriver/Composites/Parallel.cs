@@ -43,7 +43,7 @@ namespace DataOrientedDriver
                 if (successPolicy == Policy.One)
                 {
                     AbortChildren();
-                    Parent.OnChildComplete(this, status);
+                    Exit(status);
                 }
                 // if we need everyone to succeed, then we have to go on processing.
                 else if (successPolicy == Policy.All)
@@ -55,7 +55,7 @@ namespace DataOrientedDriver
                     if (succeeded.Count == Children.Count)
                     {
                         AbortChildren();
-                        Parent.OnChildComplete(this, status);
+                        Exit(status);
                     }
                     // if not, we ask it to keep running again.
                     else sender.Enter();
@@ -68,7 +68,7 @@ namespace DataOrientedDriver
                 if (failurePolicy == Policy.One)
                 {
                     AbortChildren();
-                    Parent.OnChildComplete(this, status);
+                    Exit(status);
                 }
                 else if (failurePolicy == Policy.All)
                 {
@@ -77,7 +77,7 @@ namespace DataOrientedDriver
                     if (failed.Count == Children.Count)
                     {
                         AbortChildren();
-                        Parent.OnChildComplete(this, status);
+                        Exit(status);
                     }
                     else sender.Enter();
                 }

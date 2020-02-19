@@ -17,13 +17,13 @@
                 // otherwise, we say that we have successfully completed all sequence, and exit with success.
                 else
                 {
-                    Parent.OnChildComplete(this, status);
+                    Exit(status);
                 }
             }
             // if it failed, or is aborted, we exit and propagate the code.
             else
             {
-                Parent.OnChildComplete(this, status);
+                Exit(status);
             }
         }
     }

@@ -20,7 +20,7 @@ namespace DataOrientedDriver
         {
             // Because it is not posted, so we have to acknowledge our parent (if any) about our completion, so instead of calling exit from the scheduler, we have to exit here.
             // We don't have to do anything to our own status because it doesn't matter. We just propagate success up the tree regardless of our child's.
-            Parent.OnChildComplete(this, NodeStatus.SUCCESS);
+            Exit(NodeStatus.SUCCESS);
         }
     }
     public class InvertDecorator : Decorator
@@ -31,7 +31,7 @@ namespace DataOrientedDriver
         {
             // similar to above, we just make our status the opposite, and exit here.
             // since success = 1 (b01), failure = 2 (b10), we can simple XOR them with the number 3 (b11) to get their opposite.
-            Parent.OnChildComplete(this, status ^ NodeStatus.RUNNING);
+            Exit(status ^ NodeStatus.RUNNING);
         }
     }
     public class RepeatDecorator : Decorator
@@ -54,9 +54,9 @@ namespace DataOrientedDriver
                 {
                     Child.Enter();
                 }
-                else Parent.OnChildComplete(this, NodeStatus.SUCCESS); // if we reached our limit and all operations were successful, we exit with success. 
+                else Exit(NodeStatus.SUCCESS); // if we reached our limit and all operations were successful, we exit with success. 
             }
-            else Parent.OnChildComplete(this, NodeStatus.FAILURE); // if any of our child operation failed, we exit with failure and does not continue.
+            else Exit(NodeStatus.FAILURE); // if any of our child operation failed, we exit with failure and does not continue.
         }
     }
     public class TimedPrematureSuccessDecorator : Decorator
@@ -89,7 +89,7 @@ namespace DataOrientedDriver
         public override void OnChildComplete(Behavior sender, NodeStatus status)
         {
             Status = status;
-            Parent.OnChildComplete(this, Status);
+            Exit(Status);
         }
     }
 
